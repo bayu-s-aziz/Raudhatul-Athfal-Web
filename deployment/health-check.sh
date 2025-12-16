@@ -111,10 +111,8 @@ echo "Checking database connectivity..."
 if command -v psql &> /dev/null; then
     # Try to read DB credentials from .env if available
     if [ -f ".env" ]; then
-        # Source the .env file safely
-        set -a
-        source .env 2>/dev/null || true
-        set +a
+        # Safely extract DATABASE_URL without executing arbitrary code
+        DATABASE_URL=$(grep -E '^DATABASE_URL=' .env | head -1 | cut -d= -f2- | sed 's/^["'"'"']//' | sed 's/["'"'"']$//')
         
         if [ -n "$DATABASE_URL" ]; then
             if psql "$DATABASE_URL" -c "SELECT 1;" >/dev/null 2>&1; then

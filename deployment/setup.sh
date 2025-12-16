@@ -257,10 +257,22 @@ if [ -f "$APP_DIR/.env" ]; then
 else
     # Generate session secret (verify node is available first)
     if command -v node &> /dev/null; then
-        SESSION_SECRET=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" 2>/dev/null || echo "CHANGE_ME_$(date +%s)")
+        SESSION_SECRET=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" 2>/dev/null || openssl rand -hex 32 2>/dev/null || echo "")
+    elif command -v openssl &> /dev/null; then
+        SESSION_SECRET=$(openssl rand -hex 32 2>/dev/null || echo "")
     else
-        print_warning "Node.js not available, using temporary session secret"
-        SESSION_SECRET="CHANGE_ME_$(date +%s)"
+        SESSION_SECRET=""
+    fi
+    
+    # If all methods failed, use a secure random fallback
+    if [ -z "$SESSION_SECRET" ]; then
+        if [ -r /dev/urandom ]; then
+            SESSION_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+        else
+            print_error "Cannot generate secure session secret!"
+            print_warning "Please generate manually and update .env after setup"
+            SESSION_SECRET="INSECURE_PLACEHOLDER_REPLACE_ME"
+        fi
     fi
     
     cat > "$APP_DIR/.env" <<EOF
@@ -281,11 +293,13 @@ EOF
     chown $HESTIA_USER:$HESTIA_USER "$APP_DIR/.env"
     chmod 600 "$APP_DIR/.env"
     
-    if [ "$SESSION_SECRET" = "CHANGE_ME_$(date +%s)" ]; then
-        print_warning ".env file created with temporary session secret"
-        print_info "Generate a secure one later with: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
+    if [ "$SESSION_SECRET" = "INSECURE_PLACEHOLDER_REPLACE_ME" ]; then
+        print_error ".env file created with INSECURE session secret!"
+        print_warning "IMPORTANT: Generate a secure session secret immediately:"
+        print_info "  node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
+        print_info "Then update SESSION_SECRET in $APP_DIR/.env"
     else
-        print_success ".env file created"
+        print_success ".env file created with secure session secret"
     fi
 fi
 echo ""
