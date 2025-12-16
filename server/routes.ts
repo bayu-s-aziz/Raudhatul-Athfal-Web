@@ -7,6 +7,27 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  // Health check endpoint for monitoring
+  app.get("/api/health", async (req, res) => {
+    try {
+      // Check database connectivity
+      const messages = await storage.getContactMessages();
+      res.json({ 
+        status: "healthy",
+        timestamp: new Date().toISOString(),
+        database: "connected",
+        uptime: process.uptime()
+      });
+    } catch (error) {
+      res.status(503).json({ 
+        status: "unhealthy",
+        timestamp: new Date().toISOString(),
+        database: "disconnected",
+        error: "Database connection failed"
+      });
+    }
+  });
+
   app.post("/api/contact", async (req, res) => {
     try {
       const parsed = insertContactMessageSchema.safeParse(req.body);
