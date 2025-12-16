@@ -119,9 +119,22 @@ echo ""
 print_header "Step 3/6: Setting up Database"
 print_info "Creating database and user..."
 
-# Create database and user
-sudo -u postgres psql <<EOF
--- Drop if exists (for fresh install)
+# Check if database already exists
+DB_EXISTS=$(sudo -u postgres psql -tAc "SELECT 1 FROM pg_database WHERE datname='$DB_NAME'" || echo "")
+
+if [ "$DB_EXISTS" = "1" ]; then
+    print_warning "Database '$DB_NAME' already exists!"
+    read -p "Drop and recreate? This will DELETE all data! (yes/no): " CONFIRM_DROP
+    if [ "$CONFIRM_DROP" != "yes" ]; then
+        print_info "Keeping existing database. Skipping database creation."
+        SKIP_DB_CREATE=true
+    fi
+fi
+
+if [ "$SKIP_DB_CREATE" != "true" ]; then
+    # Create database and user
+    sudo -u postgres psql <<EOF
+-- Drop if exists
 DROP DATABASE IF EXISTS $DB_NAME;
 DROP USER IF EXISTS $DB_USER;
 
@@ -138,6 +151,7 @@ GRANT ALL ON SCHEMA public TO $DB_USER;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO $DB_USER;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO $DB_USER;
 EOF
+fi
 
 print_success "Database created successfully"
 echo ""
@@ -241,8 +255,13 @@ print_header "Step 6/6: Creating Environment Configuration"
 if [ -f "$APP_DIR/.env" ]; then
     print_warning ".env file already exists, skipping..."
 else
-    # Generate session secret
-    SESSION_SECRET=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
+    # Generate session secret (verify node is available first)
+    if command -v node &> /dev/null; then
+        SESSION_SECRET=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" 2>/dev/null || echo "CHANGE_ME_$(date +%s)")
+    else
+        print_warning "Node.js not available, using temporary session secret"
+        SESSION_SECRET="CHANGE_ME_$(date +%s)"
+    fi
     
     cat > "$APP_DIR/.env" <<EOF
 # Node Environment
@@ -261,7 +280,13 @@ EOF
 
     chown $HESTIA_USER:$HESTIA_USER "$APP_DIR/.env"
     chmod 600 "$APP_DIR/.env"
-    print_success ".env file created"
+    
+    if [ "$SESSION_SECRET" = "CHANGE_ME_$(date +%s)" ]; then
+        print_warning ".env file created with temporary session secret"
+        print_info "Generate a secure one later with: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
+    else
+        print_success ".env file created"
+    fi
 fi
 echo ""
 

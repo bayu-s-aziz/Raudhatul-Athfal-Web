@@ -106,15 +106,18 @@ elif ! command -v jq &> /dev/null; then
 fi
 echo ""
 
-# 5. Check database connectivity
+# Check database connectivity
 echo "Checking database connectivity..."
 if command -v psql &> /dev/null; then
     # Try to read DB credentials from .env if available
     if [ -f ".env" ]; then
-        DB_URL=$(grep DATABASE_URL .env | cut -d '=' -f2 | tr -d '"' | tr -d "'")
+        # Source the .env file safely
+        set -a
+        source .env 2>/dev/null || true
+        set +a
         
-        if [ -n "$DB_URL" ]; then
-            if psql "$DB_URL" -c "SELECT 1;" >/dev/null 2>&1; then
+        if [ -n "$DATABASE_URL" ]; then
+            if psql "$DATABASE_URL" -c "SELECT 1;" >/dev/null 2>&1; then
                 print_status "ok" "Database connection successful"
             else
                 print_status "error" "Database connection failed"

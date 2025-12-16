@@ -14,11 +14,11 @@
 set -e
 
 # Configuration (Update these values)
-APP_DIR="${APP_DIR:-/home/YOUR_USER/web/YOUR_DOMAIN/private/app}"
+APP_DIR="${APP_DIR:-}"
 SERVICE_NAME="ra-school"
 BRANCH="${BRANCH:-main}"
 
-# Colors for output
+# Colors for output (define early)
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -41,12 +41,22 @@ print_success() {
     echo -e "${GREEN}✅ $1${NC}"
 }
 
-# Check if running in correct directory
-if [ ! -f "package.json" ]; then
-    print_error "package.json not found. Please run this script from the application directory."
-    print_info "Expected directory: $APP_DIR"
+# Try to detect APP_DIR if not set
+if [ -z "$APP_DIR" ]; then
+    # Get the directory of this script
+    SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    # Assume script is in deployment/ subdirectory
+    APP_DIR="$(dirname "$SCRIPT_DIR")"
+fi
+
+# Verify we're in the right directory
+if [ ! -f "$APP_DIR/package.json" ]; then
+    print_error "Cannot find package.json. Please set APP_DIR environment variable or run from app directory."
+    print_info "Example: APP_DIR=/home/user/web/domain.com/private/app ./deployment/deploy.sh"
     exit 1
 fi
+
+cd "$APP_DIR"
 
 # Start deployment
 print_info "Starting deployment for Raudhatul Athfal Al-Islam School Website..."
