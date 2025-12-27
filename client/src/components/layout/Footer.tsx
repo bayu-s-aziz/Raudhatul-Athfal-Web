@@ -61,16 +61,10 @@ export function Footer() {
                   Kab. Ciamis, Jawa Barat 46268
                 </span>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-5 w-5 flex-shrink-0 text-accent" />
-                <span className="text-primary-foreground/80 text-sm">
-                  +62 812-3456-7890
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
+                            <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 flex-shrink-0 text-accent" />
                 <span className="text-primary-foreground/80 text-sm">
-                  info@raalislam.sch.id
+                  info@ra-alislam.sch.id
                 </span>
               </li>
             </ul>
@@ -83,7 +77,7 @@ export function Footer() {
                 <Clock className="h-5 w-5 mt-0.5 flex-shrink-0 text-accent" />
                 <div className="text-sm">
                   <p className="text-primary-foreground font-medium">Senin - Jumat</p>
-                  <p className="text-primary-foreground/80">07:00 - 11:00 WIB</p>
+                  <p className="text-primary-foreground/80">06:30 - 10:30 WIB</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">

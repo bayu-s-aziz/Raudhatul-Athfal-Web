@@ -6,19 +6,27 @@ import classroomImage from "@assets/generated_images/islamic_kindergarten_classr
 import patternImage from "@assets/generated_images/islamic_geometric_pattern.png";
 
 const missions = [
-  "Menanamkan nilai-nilai aqidah dan akhlakul karimah sejak usia dini",
-  "Mengembangkan potensi kognitif, afektif, dan psikomotorik anak",
-  "Menciptakan lingkungan belajar yang Islami, nyaman, dan menyenangkan",
-  "Mempersiapkan anak untuk melanjutkan ke jenjang pendidikan berikutnya",
-  "Membangun kerjasama yang baik antara sekolah, orang tua, dan masyarakat",
-  "Mengembangkan kreativitas dan kemandirian anak",
+  "Menampilkan nilai-nilai agama Islam dan akhlakul karimah",
+  "Mengembangkan kecerdasan anak secara menyeluruh (holistik)",
+  "Mendorong kreativitas dan kemandirian anak",
+  "Mempersiapkan peserta didik untuk melanjutkan ke jenjang pendidikan dasar",
 ];
 
-const teachers = [
-  { name: "Ustadzah Fatimah, S.Pd.I", role: "Kepala Sekolah", experience: "15 tahun" },
-  { name: "Ustadzah Aisyah, S.Pd", role: "Guru Kelas A", experience: "10 tahun" },
-  { name: "Ustadzah Khadijah, S.Pd", role: "Guru Kelas B", experience: "8 tahun" },
-  { name: "Ustadz Ahmad, S.Pd.I", role: "Guru Al-Quran", experience: "12 tahun" },
+const tujuan = [
+  "Menanamkan nilai-nilai keimanan, ketaqwaan dan akhlakul karimah",
+  "Mengembangkan seluruh aspek perkembangan anak secara holistik",
+  "Menumbuhkan rasa ingin tahu dan kreativitas anak",
+  "Membentuk kemandirian, kepercayaan diri dan tanggung jawab",
+];
+
+const strukturOrganisasi = [
+  { name: "Ade Aziz Hakim, S. Ag, M.M", role: "Ketua Yayasan" },
+  { name: "Lilis Farida, S. Pd.I", role: "Kepala RA" },
+  { name: "Ai Idah Romdiani, S. Ag", role: "Komite" },
+  { name: "Elis Nurjanah", role: "Sekretaris" },
+  { name: "Eulis Sukmayati", role: "Bendahara" },
+  { name: "Ecin Nurbayanti", role: "Guru Kelompok A" },
+  { name: "Amas Mastini S.Pd", role: "Guru Kelompok A" },
 ];
 
 export default function Profil() {
@@ -60,16 +68,29 @@ export default function Profil() {
                   </p>
                 </div>
               </div>
+              <div className="bg-muted/30 rounded-lg p-4 mb-4">
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div><span className="font-semibold">NSS / NPSN:</span></div>
+                  <div>101232070043 / 69736386</div>
+                  <div><span className="font-semibold">Status:</span></div>
+                  <div>Swasta</div>
+                  <div><span className="font-semibold">Akreditasi:</span></div>
+                  <div>B</div>
+                  <div><span className="font-semibold">Tahun Berdiri:</span></div>
+                  <div>1988</div>
+                  <div><span className="font-semibold">Jumlah Guru:</span></div>
+                  <div>5 Orang</div>
+                </div>
+              </div>
               <p className="text-foreground leading-relaxed mb-4">
                 Raudhatul Athfal Al-Islam adalah lembaga pendidikan anak usia dini yang
-                berdiri di Dusun Sirnagalih, Kecamatan Sindangkasih, Kabupaten Ciamis,
-                Jawa Barat. Sejak didirikan, kami berkomitmen untuk memberikan pendidikan
-                yang berkualitas dengan landasan nilai-nilai Islam.
+                secara resmi berdiri pada tahun 1988 di Dusun Sirnagalih, Desa Gunungcupu,
+                Kecamatan Sindangkasih, Kabupaten Ciamis, Provinsi Jawa Barat.
               </p>
               <p className="text-foreground leading-relaxed">
-                Dengan pengalaman lebih dari 15 tahun dalam mendidik generasi muda, kami
-                telah meluluskan ratusan alumni yang siap melanjutkan pendidikan ke
-                jenjang berikutnya dengan bekal iman, ilmu, dan akhlak yang mulia.
+                Dengan pengalaman lebih dari 36 tahun dalam mendidik generasi muda, kami
+                berkomitmen untuk memberikan pendidikan berkualitas dengan landasan nilai-nilai
+                Islam, membentuk generasi yang berakhlak mulia, cerdas, dan terampil.
               </p>
             </div>
             <div className="rounded-lg overflow-hidden">
@@ -85,7 +106,7 @@ export default function Profil() {
 
       <section className="py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <Card data-testid="card-visi">
               <CardContent className="p-8">
                 <div className="flex items-center gap-3 mb-6">
@@ -95,9 +116,8 @@ export default function Profil() {
                   <h2 className="text-2xl font-bold text-foreground">Visi</h2>
                 </div>
                 <p className="text-foreground text-lg leading-relaxed">
-                  "Menjadi lembaga pendidikan anak usia dini yang unggul dalam membentuk
-                  generasi Islami yang cerdas, kreatif, berakhlak mulia, dan siap
-                  menghadapi tantangan masa depan dengan pondasi iman yang kokoh."
+                  "Terwujudnya peserta didik yang berakhlak mulia, cerdas dan terampil,
+                  serta siap melanjutkan ke jenjang pendidikan dasar."
                 </p>
               </CardContent>
             </Card>
@@ -114,7 +134,26 @@ export default function Profil() {
                   {missions.map((mission, index) => (
                     <li key={index} className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-foreground">{mission}</span>
+                      <span className="text-foreground text-sm">{mission}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card data-testid="card-tujuan">
+              <CardContent className="p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Target className="h-6 w-6 text-primary" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-foreground">Tujuan</h2>
+                </div>
+                <ul className="space-y-3">
+                  {tujuan.map((item, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-foreground text-sm">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -137,20 +176,29 @@ export default function Profil() {
 
           <div className="bg-muted/30 rounded-lg p-6 md:p-8">
             <p className="text-foreground leading-relaxed mb-4">
-              Raudhatul Athfal Al-Islam didirikan pada tahun 2008 oleh tokoh masyarakat
-              dan ulama setempat yang memiliki visi untuk menyediakan pendidikan anak
-              usia dini berbasis Islam di kawasan Gunungcupu, Sindangkasih.
+              Raudhatul Athfal (RA) Al-Islam secara resmi berdiri pada tahun 1988 di Dusun
+              Sirnagalih, Desa Gunungcupu, Kecamatan Sindangkasih, Kabupaten Ciamis. Cikal
+              bakal lembaga pendidikan ini berawal dari prakarsa mulia seorang tokoh masyarakat
+              bernama Bapak Sulaeman. Beliau memiliki kepedulian yang mendalam terhadap
+              pendidikan dasar keagamaan bagi anak-anak di lingkungan sekitarnya.
             </p>
             <p className="text-foreground leading-relaxed mb-4">
-              Bermula dari sebuah ruang kecil dengan hanya 15 murid, kini RA Al-Islam
-              telah berkembang menjadi lembaga pendidikan yang dipercaya oleh masyarakat
-              sekitar. Dengan fasilitas yang terus ditingkatkan dan tenaga pendidik yang
-              berkompeten, kami terus berkomitmen memberikan pendidikan terbaik.
+              Dengan niat tulus untuk memberantas buta huruf Al-Qur'an, beliau menginisiasi
+              sebuah kegiatan belajar mengajar sederhana yang berfokus pada membaca dan mengaji.
+              Pada tahap awal, kegiatan pendidikan ini sepenuhnya dipercayakan kepada istri
+              beliau, Ibu Encum Kulsum, yang dengan sabar dan tekun menjadi pengajar pertama.
+            </p>
+            <p className="text-foreground leading-relaxed mb-4">
+              Seiring berjalannya waktu, inisiatif sederhana ini mendapat sambutan yang sangat
+              positif dari masyarakat setempat. Semakin banyak orang tua yang mempercayakan
+              pendidikan anaknya, sehingga mendorong beberapa penduduk lain yang memiliki latar
+              belakang pendidikan yang lebih memadai untuk turut serta mengabdikan diri sebagai
+              tenaga pengajar.
             </p>
             <p className="text-foreground leading-relaxed">
-              Hingga saat ini, lebih dari 500 alumni telah kami luluskan dan berhasil
-              melanjutkan pendidikan ke jenjang berikutnya dengan prestasi yang
-              membanggakan.
+              Kini, tongkat estafet perjuangan dan pengelolaan RA Al-Islam dilanjutkan oleh
+              generasi penerus, termasuk putra-putri dari pendiri. Cita-cita luhur Bapak Sulaeman
+              untuk membentuk generasi yang agamis kini tercermin jelas dalam visi sekolah.
             </p>
           </div>
         </div>
@@ -163,22 +211,19 @@ export default function Profil() {
               <Users className="h-6 w-6 text-primary" />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-              Tenaga Pendidik
+              Struktur Organisasi
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {teachers.map((teacher, index) => (
-              <Card key={index} data-testid={`card-teacher-${index}`}>
+            {strukturOrganisasi.map((person, index) => (
+              <Card key={index} data-testid={`card-struktur-${index}`}>
                 <CardContent className="p-6 text-center">
                   <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                     <Users className="h-10 w-10 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-foreground">{teacher.name}</h3>
-                  <p className="text-primary text-sm font-medium mt-1">{teacher.role}</p>
-                  <p className="text-muted-foreground text-sm mt-2">
-                    Pengalaman: {teacher.experience}
-                  </p>
+                  <h3 className="font-semibold text-foreground text-sm">{person.name}</h3>
+                  <p className="text-primary text-sm font-medium mt-2">{person.role}</p>
                 </CardContent>
               </Card>
             ))}

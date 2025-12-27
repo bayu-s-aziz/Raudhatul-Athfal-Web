@@ -49,7 +49,7 @@ export function Header() {
               <h1 className="text-sm md:text-base font-semibold text-foreground leading-tight">
                 Raudhatul Athfal
               </h1>
-              <p className="text-xs text-muted-foreground">Al-Islam</p>
+              <p className="text-sm text-muted-foreground">Al-Islam</p>
             </div>
           </Link>
 

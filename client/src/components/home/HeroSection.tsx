@@ -73,9 +73,9 @@ export function HeroSection() {
 
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {[
-            { value: "15+", label: "Tahun Pengalaman" },
-            { value: "500+", label: "Alumni" },
-            { value: "10+", label: "Guru Profesional" },
+            { value: "36+", label: "Tahun Berdiri" },
+            { value: "B", label: "Akreditasi" },
+            { value: "5", label: "Guru" },
             { value: "100%", label: "Kurikulum Islami" },
           ].map((stat, index) => (
             <div

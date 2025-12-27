@@ -6,8 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import {
   MapPin,
   Phone,
@@ -35,30 +33,11 @@ export default function Kontak() {
     message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const mutation = useMutation({
-    mutationFn: async (data: ContactFormData) => {
-      return await apiRequest("POST", "/api/contact", data);
-    },
-    onSuccess: () => {
-      setIsSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", message: "" });
-      toast({
-        title: "Pesan Terkirim",
-        description: "Terima kasih! Kami akan segera menghubungi Anda.",
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Gagal Mengirim",
-        description: "Terjadi kesalahan. Silakan coba lagi.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!formData.name || !formData.email || !formData.message) {
       toast({
         title: "Form Tidak Lengkap",
@@ -67,7 +46,37 @@ export default function Kontak() {
       });
       return;
     }
-    mutation.mutate(formData);
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/contact.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      setIsSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", message: "" });
+      toast({
+        title: "Pesan Terkirim",
+        description: "Terima kasih! Kami akan segera menghubungi Anda.",
+      });
+    } catch (error) {
+      toast({
+        title: "Gagal Mengirim",
+        description: "Terjadi kesalahan. Silakan coba lagi.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (
@@ -111,24 +120,16 @@ export default function Kontak() {
                     <div>
                       <h3 className="font-medium text-foreground">Alamat</h3>
                       <p className="text-muted-foreground text-sm mt-1">
-                        Dusun Sirnagalih, Kecamatan Sindangkasih,
+                        Dusun Sirnagalih, RT 38, RW 18, Desa Gunungcupu,
                         <br />
-                        Kabupaten Ciamis, Jawa Barat 46268
+                        Kecamatan Sindangkasih, Kabupaten Ciamis,
+                        <br />
+                        Provinsi Jawa Barat 46268
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Phone className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-foreground">Telepon</h3>
-                      <p className="text-muted-foreground text-sm mt-1">
-                        +62 812-3456-7890
-                      </p>
-                    </div>
-                  </div>
+                  
 
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -137,7 +138,7 @@ export default function Kontak() {
                     <div>
                       <h3 className="font-medium text-foreground">Email</h3>
                       <p className="text-muted-foreground text-sm mt-1">
-                        info@raalislam.sch.id
+                        info@ra-alislam.sch.id
                       </p>
                     </div>
                   </div>
@@ -149,7 +150,7 @@ export default function Kontak() {
                     <div>
                       <h3 className="font-medium text-foreground">Jam Operasional</h3>
                       <p className="text-muted-foreground text-sm mt-1">
-                        Senin - Jumat: 07:00 - 11:00 WIB
+                        Senin - Jumat: 06:30 - 10:30 WIB
                         <br />
                         Sabtu: Ekstrakurikuler
                       </p>
@@ -165,7 +166,7 @@ export default function Kontak() {
                 <CardContent>
                   <div className="aspect-video rounded-lg overflow-hidden bg-muted">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31647.62095854095!2d108.34!3d-7.33!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f5e1234567890%3A0x1234567890abcdef!2sSindangkasih%2C%20Ciamis%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1234567890"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.5580493083603!2d108.24221987409061!3d-7.291017492716422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f5a73ed69f6cd%3A0x3bf3e2c2eb3cfffa!2sRaudhatul%20Athfal%20Al%20Islam!5e0!3m2!1sid!2sid!4v1766837998053!5m2!1sid!2sid"
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
@@ -266,10 +267,10 @@ export default function Kontak() {
                     <Button
                       type="submit"
                       className="w-full"
-                      disabled={mutation.isPending}
+                      disabled={isLoading}
                       data-testid="button-submit"
                     >
-                      {mutation.isPending ? (
+                      {isLoading ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                           Mengirim...
