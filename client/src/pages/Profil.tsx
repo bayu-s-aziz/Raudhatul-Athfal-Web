@@ -20,13 +20,13 @@ const tujuan = [
 ];
 
 const strukturOrganisasi = [
-  { name: "Ade Aziz Hakim, S. Ag, M.M", role: "Ketua Yayasan" },
+  { name: "Ade Aziz Hakim, S. Ag, M. M", role: "Ketua Yayasan" },
   { name: "Lilis Farida, S. Pd.I", role: "Kepala RA" },
   { name: "Ai Idah Romdiani, S. Ag", role: "Komite" },
   { name: "Elis Nurjanah", role: "Sekretaris" },
   { name: "Eulis Sukmayati", role: "Bendahara" },
-  { name: "Ecin Nurbayanti", role: "Guru Kelompok A" },
   { name: "Amas Mastini S.Pd", role: "Guru Kelompok A" },
+  { name: "Ecin Nurbayanti", role: "Guru Kelompok B" }
 ];
 
 export default function Profil() {

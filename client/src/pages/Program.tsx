@@ -74,14 +74,14 @@ const programs = [
 ];
 
 const dailySchedule = [
-  { time: "07:00 - 07:30", activity: "Penyambutan & Bermain Bebas" },
-  { time: "07:30 - 08:00", activity: "Baris, Doa, & Muraja'ah" },
-  { time: "08:00 - 08:30", activity: "Pembelajaran Al-Quran" },
-  { time: "08:30 - 09:15", activity: "Kegiatan Inti" },
-  { time: "09:15 - 09:45", activity: "Istirahat & Makan Snack" },
-  { time: "09:45 - 10:15", activity: "Kegiatan Motorik/Seni" },
-  { time: "10:15 - 10:45", activity: "Recalling & Doa Pulang" },
-  { time: "10:45 - 11:00", activity: "Persiapan Pulang" },
+  { time: "06:30 - 07:00", activity: "Penyambutan & Bermain Bebas" },
+  { time: "07:00 - 07:30", activity: "Baris, Doa, & Muraja'ah" },
+  { time: "07:30 - 08:00", activity: "Pembelajaran Al-Quran" },
+  { time: "08:00 - 08:45", activity: "Kegiatan Inti" },
+  { time: "08:45 - 09:15", activity: "Istirahat & Makan Snack" },
+  { time: "09:15 - 09:45", activity: "Kegiatan Motorik/Seni" },
+  { time: "09:45 - 10:15", activity: "Recalling & Evaluasi" },
+  { time: "10:15 - 10:30", activity: "Doa Pulang & Persiapan" },
 ];
 
 export default function Program() {
