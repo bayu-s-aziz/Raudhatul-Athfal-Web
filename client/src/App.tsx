@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Switch, Route, useLocation } from "wouter";
+import { motion, AnimatePresence } from "framer-motion";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -21,16 +22,29 @@ function ScrollToTop() {
   return null;
 }
 
+// Route dengan fade transition
 function Router() {
+  const [location] = useLocation();
+
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/profil" component={Profil} />
-      <Route path="/program" component={Program} />
-      <Route path="/galeri" component={Galeri} />
-      <Route path="/kontak" component={Kontak} />
-      <Route component={NotFound} />
-    </Switch>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/profil" component={Profil} />
+          <Route path="/program" component={Program} />
+          <Route path="/galeri" component={Galeri} />
+          <Route path="/kontak" component={Kontak} />
+          <Route component={NotFound} />
+        </Switch>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
