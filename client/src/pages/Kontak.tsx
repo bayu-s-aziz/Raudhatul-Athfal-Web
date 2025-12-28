@@ -35,7 +35,7 @@ export default function Kontak() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.name || !formData.email || !formData.message) {
@@ -47,35 +47,62 @@ export default function Kontak() {
       return;
     }
 
-    setIsLoading(true);
-
+    // Submit via a hidden iframe to avoid opening a new tab and bypass CORS restrictions
     try {
-      const response = await fetch("/contact.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const iframeName = `formsubmit_iframe_${Date.now()}`;
+      const iframe = document.createElement("iframe");
+      iframe.name = iframeName;
+      iframe.style.display = "none";
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      // Resolve success when iframe loads the response (may be immediate)
+      const onIframeLoad = () => {
+        try {
+          setIsSubmitted(true);
+          setFormData({ name: "", email: "", phone: "", message: "" });
+          toast({
+            title: "Pesan Terkirim",
+            description: "Terima kasih! Kami akan segera menghubungi Anda.",
+          });
+        } finally {
+          // cleanup
+          iframe.removeEventListener("load", onIframeLoad);
+          setTimeout(() => iframe.remove(), 1000);
+        }
+      };
 
-      setIsSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", message: "" });
-      toast({
-        title: "Pesan Terkirim",
-        description: "Terima kasih! Kami akan segera menghubungi Anda.",
-      });
+      iframe.addEventListener("load", onIframeLoad);
+      document.body.appendChild(iframe);
+
+      const form = document.createElement("form") as HTMLFormElement;
+      form.action = "https://formsubmit.co/el/husago";
+      form.method = "POST";
+      form.target = iframeName;
+
+      const addInput = (name: string, value: string) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+      };
+
+      addInput("name", formData.name);
+      addInput("email", formData.email);
+      addInput("phone", formData.phone || "-");
+      addInput("message", formData.message);
+      addInput("_subject", "Pesan Baru dari Website RA Al-Islam");
+      addInput("_captcha", "false");
+
+      document.body.appendChild(form);
+      form.submit();
+      // remove the form immediately; iframe will handle response
+      document.body.removeChild(form);
     } catch (error) {
       toast({
         title: "Gagal Mengirim",
         description: "Terjadi kesalahan. Silakan coba lagi.",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
